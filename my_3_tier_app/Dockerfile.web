@@ -1,0 +1,12 @@
+# Dockerfile for the Web
+FROM node:14
+
+WORKDIR /app
+
+COPY web/package*.json ./
+RUN npm install
+
+COPY web/ .
+
+EXPOSE 8080
+CMD ["node", "server.js"]
