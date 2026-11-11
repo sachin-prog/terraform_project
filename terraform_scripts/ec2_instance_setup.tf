@@ -1,3 +1,8 @@
+variable "my_ip" {
+  description = "Your public ip with /32 , allowed to reach ssh,grafana and prometheus."
+  type = string
+}
+
 
 
 
@@ -65,7 +70,7 @@ resource "aws_security_group" "practice_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [var.my_ip]
   }
 
   ingress {
@@ -83,6 +88,24 @@ resource "aws_security_group" "practice_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  ingress {
+    description = "Grafana from my ip only"
+    from_port = 3000
+    to_port = 3000
+    protocol = "tcp"
+    cidr_blocks = [var.my_ip]
+  }
+
+  ingress {
+    description = "Prometheus from my ip only"
+    from_port = 9090
+    to_port = 9090
+    protocol = "tcp"
+    cidr_blocks = [var.my_ip]
+  }
+
+
 
 
   egress {
